@@ -1,0 +1,46 @@
+/* Copyright (c) 2018 Aalto University
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+enclave {
+    include "sgx_tcrypto.h"
+    include "sgx_tseal.h"
+    include "nrt_key_exchange.h"
+    from "nrt_tke.edl" import *;
+    
+    untrusted {
+        /*
+         * ocall_write - invokes OCALL to display string buffer inside the enclave.
+         *  [in]: copy the string buffer to App outside.
+         *  [string]: specifies 'str' is a NULL terminated buffer.
+         */
+        sgx_status_t ocall_write([in, size=buflen] const uint8_t *buf, int32_t buflen);
+        void print_string_ocall([in, string] const char *str);
+    };
+
+    trusted {
+        public int ecall_enclave_init([in, size = size_sdata] const uint8_t* sealed_input,
+                                      uint32_t size_sdata);
+        public int ecall_process(nrt_ra_context_t context,
+                                 [in, size=password_length] const char *password,
+                                 uint32_t password_length,
+                                 [out] sgx_cmac_128bit_tag_t *tag_cmac);
+        public int ecall_shutdown([out] uint8_t* sealed_output,
+                                  [out] uint32_t* size_sdata);
+        public int ecall_reset_attempts();
+
+        public int ecall_enclave_init_ra(int b_pse, [out] nrt_ra_context_t *context);
+        public int ecall_enclave_close_ra(nrt_ra_context_t context);
+    };
+};
