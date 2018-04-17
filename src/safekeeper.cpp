@@ -53,6 +53,16 @@
 #include "safekeeper.h"
 #include "enclave_u.h"
 
+// In order for Remote Attestation to work
+// fill in the Service Provider ID obtained from Intel
+static const sgx_spid_t g_spid = {
+    0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00
+};
+
+
 // Utilities
 int hex2bytes(const char* hex, int len, char* res) {
     for(int i = 0; i < len/2; i++) {
@@ -191,13 +201,6 @@ sgx_status_t enclave_process(sgx_enclave_id_t eid,
 
     return SGX_SUCCESS;
 }
-
-static const sgx_spid_t g_spid = {
-    0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00
-};
 
 sgx_status_t obtain_quote(sgx_enclave_id_t eid, nrt_ra_context_t context, uint8_t* quote)
 {
