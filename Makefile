@@ -135,7 +135,7 @@ endif
 App_Cpp_Flags := $(App_C_Flags) -std=c++11
 
 App_Libs :=   -L$(SGX_LIBRARY_PATH) -l$(Urts_Library_Name) \
-		$(NrtUke_Link) $(NrtTke_Link) $(B64_Link)
+		$(NrtUke_Link) $(B64_Link)
 
 App_Link_Flags := $(SGX_COMMON_CFLAGS) $(App_Libs) -pthread
 
@@ -174,7 +174,7 @@ endif
 Server_Cpp_Flags := $(Server_C_Flags) -std=c++11
 
 Server_Libs :=   -L$(SGX_LIBRARY_PATH) -l$(Urts_Library_Name) \
-		$(NrtUke_Link) $(NrtTke_Link) $(B64_Link)
+		$(NrtUke_Link) $(B64_Link)
 
 Server_Link_Flags := $(SGX_COMMON_CFLAGS) $(Server_Libs) -pthread
 
@@ -213,7 +213,7 @@ endif
 Php_Cpp_Flags := $(Php_C_Flags) -std=c++11
 
 Php_Libs := -L$(SGX_LIBRARY_PATH) -l$(Urts_Library_Name) \
-		$(NrtUke_Link) $(NrtTke_Link) $(PhpCpp_Link) $(B64_Link)
+		$(NrtUke_Link) $(PhpCpp_Link) $(B64_Link)
 
 Php_Link_Flags := -shared $(SGX_COMMON_CFLAGS) $(Php_Libs)
 

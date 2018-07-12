@@ -15,18 +15,16 @@ Building instructions
 
 - Install SGX SDK:
   * Download and install [Intel SGX SDK for Linux](https://github.com/01org/linux-sgx)
-  * Set the SGX-SDK variable in the Makefile to the location of your SGX SDK
-  * Set the SIGNING-KEY variable in the Makefile to point to an enclave signing key. If needed, generate a signing key following Intel's [OpenSSL Examples](https://software.intel.com/en-us/node/708948)
+  * Set the SGX-SDK variable in the Makefile to the location of your SGX SDK (by default this variable is set to /opt/intel/sgxsdk).
+  * Set the SIGNING-KEY variable in the Makefile to point to an enclave signing key. If needed, generate a signing key following Intel's [Enclave Signing Examples](https://software.intel.com/en-us/sgx-sdk-dev-reference-enclave-signing-examples). If you do not already have a signing key, you can generate one following Intel's [OpenSSL Examples](https://software.intel.com/en-us/sgx-sdk-dev-reference-openssl-examples) (by default this variable is set to ./src/enclave/enclave_private.pem).
 
 - Build the 3rd party and SafeKeeper libraries
-  * Clone [safekeeper-libs](https://github.com/SafeKeeper/safekeeper-libs)
-  * Set the TOP-DIR variable in the `safekeeper-libs/Makefile` to the location of your SGX SDK *cloned repository*. Note that it is referenced from Makefiles in `lib_tke` and `lib_uke`, so if using relative paths, add one level of `../`.
-  * Build libraries by running `make`.
+  * Clone and build the [safekeeper-libs](https://github.com/SafeKeeper/safekeeper-libs)
 
 ### Building SafeKeeper service
 
-  * Make sure that the Makefile libdir variable points to the right directory (`safekeeper-libs`), and the paths to the 3rd party libraries are correct.
-  * Run `make`. This will generate objects under ``build`` directory and safekeeper executable. The enclave will be put under ``build/enclave``.
+  * Make sure that the Makefile Lib_Dir variable points to the right directory (`safekeeper-libs`), and the paths to the 3rd party libraries are correct.
+  * Run `make`. This will generate objects under ``build`` directory and safekeeper executable. The enclave will be put under ``build/enclave``. By default, SafeKeeper will be built in hardware (HW) mode. To build in simulation mode, run `make SGX_MODE=SIM` or change the SGX_MODE variable in the Makefile.
   * To test the build run `./testing_app`. There is no need to build the PHP extension for that.
 
 Installation
